@@ -1,0 +1,207 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage[margin=2cm]{geometry}
+\usepackage{amsmath, amssymb, amsthm, dsfont, IEEEtrantools}
+\usepackage{enumitem}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{\baselineskip}
+
+\setlist[description]{
+    labelindent=\parindent,
+    leftmargin=\parindent,
+    itemsep=\parskip,
+}
+
+\newcommand{\ens}[3][\vert]{
+    \left\{#2 \;\, #1 \; #3\right\}
+}
+\DeclareMathOperator{\Card}{\mathrm{Card}}
+\newcommand{\gauss}{\mathcal{N}}
+\newcommand{\K}{\mathbb{K}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\ii}{\mathrm{i}}
+\newcommand{\E}{\mathbb{E}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\diff}{\mathrm{d}}
+\newcommand{\ind}{\mathds{1}}
+\newcommand{\module}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\equi}[1]{\underset{#1}{\sim}}
+\renewcommand{\leq}{\leqslant}
+\renewcommand{\geq}{\geqslant}
+
+\title{Estimation de la taille d'un graphe par marches aléatoires}
+\author{Matthieu \textsc{Dinot}, Dorian \textsc{Boully}}
+\date{}
+
+\begin{document}
+\maketitle
+\section*{Préliminaires}
+Montrons deux résultats permettant de légitimer les hypothèses faites dans \textbf{T2} et \textbf{T3}.
+\subsection*{Spectre de la matrice d'adjacence d'un graphe $d$-régulier connexe}
+\subsection*{Une interversion de limites}
+\section{Partie théorique}
+\begin{description}
+    \item[T1.\label{q:t1}] Soient $s \in \{0, \ldots, \tau - 1\}$ et $i \in V$. On a :
+    \begin{align*}
+    \P(X_{s+1}^{t} = i) & = \sum_{j \in V} \P((X_{s+1}^{t} = i) \cap (X_{s}^{t} = j))\\
+    & = \sum_{j \in V}  \frac{1}{d}\ind_{E}(i,j) \P (X_{s}^{t} = j)\\
+    & = \sum_{j \in V} P_{ij}\P (X_{s}^{t} = j).
+    \end{align*}
+    Ainsi $\left(\P(X_{s+1}^{t} = i)\right)_{i \in V} = P \cdot (X_{s}^{t} = i)_{i \in V}$. Une récurrence immédiate montre alors que
+    \begin{equation}\label{eq:t1}
+    \pi = P^{\tau} \cdot (\delta_{i,i_0})_{i \in V}
+    \end{equation}
+    où $\delta$ désigne le symbole de Krönecker.
+
+    \item[T2.\label{q:t2}] Le théorème spectral assure l'existence d'une matrice orthogonale $O$ telle que
+    \begin{equation*}\label{eq:diagonalisation}
+    P = {}^{t}O \,\mathrm{Diag}(1,\lambda_2, \ldots, \lambda_N)\, O.
+    \end{equation*}
+     
+    Vu les valeurs propres de $P$, on voit que, pour une norme quelconque sur les matrices $(N,N)$ (en particulier la norme subordonnée à $\left\lVert \cdot \right\rVert_2$) :
+    
+    \begin{equation*}\label{eq:limite_P}
+    P^{\tau} = {}^{t}O\Delta^{\tau}O \xrightarrow[\tau \to +\infty]{} P^{\infty} := {}^{t}O \,\mathrm{Diag}(1,0, \ldots, 0)\,O
+    \end{equation*}
+    car la convergence a lieu coefficient par coefficient. La convergence de $(P^{\tau})_{\tau \geq 1}$ pour la norme subordonnée à $\norm{\cdot}_2$ entraine la convergence simple de la suite d'applications linéaires associées au sens de $\norm{\cdot}_2$ vers la même limite.
+    On peut conclure de deux manières :
+    \begin{itemize}
+        \item Via un calcul explicite :
+        \begin{equation*}
+        \pi = P^{\tau}(\delta_{i,i_0})_{i \in V} \xrightarrow[\tau \to +\infty]{} P^{\infty}(\delta_{i,i_0})_{i \in V} = O_{1i_0} {}^{t}O \,^{t}(1, 0, \ldots, 0) = O_{1i_0} O^{-1} \,^{t}(1, 0, \ldots, 0).
+        \end{equation*}
+        Or $O^{-1} \,^{t}(1, 0, \ldots, 0)$ est le vecteur propre normalisé de $P$ de valeur propre $1$ (il y en a un seul car la valeur propre $1$ était simple). On vérifie facilement qu'il s'agit de $N^{-1/2} \,{}^{t}(1, \ldots, 1)$. Enfin, on a $O_{1i_0} = N^{-1/2}$ car c'est un coefficient de la première ligne de $O$, donc de la première colonne de $^{t}O = O^{-1}$, qui n'est autre que la matrice d'une base orthonormée de diagonalisation de $P$ dans la base canonique. On conclut comme attendu que 
+        \begin{equation}\label{eq:pi_infini}
+        \lim_{\tau \to +\infty} \pi = N^{-1}\,^{t}(1, \ldots, 1).
+        \end{equation}
+        \item En remarquant que $\pi^{\infty} := \displaystyle\lim_{\tau \to +\infty}\pi$ est le vecteur propre de $P$ associé à la valeur propre $1$ et dont la somme des coefficients vaut $1$. En effet, pour tout $\tau$, la somme des coefficients de $\pi$ vaut $1$, ce qui reste vrai à la limite (en particulier $\pi^{\infty} \neq 0$), et on a :
+        $$P \pi^{\infty} = P\lim_{\tau \to +\infty} P^{\tau}(\delta_{i,i_0})_{i \in V} = \lim_{\tau \to +\infty} P^{\tau + 1}(\delta_{i,i_0})_{i \in V} = \pi^{\infty}.$$
+        Encore une fois, on trouve la loi uniforme sur $V$.
+    \end{itemize} 
+    
+    
+
+    \item[T3.\label{q:t3}] Notons
+    $$\mathcal{A}_m = \ens{(y_1,\ldots,y_m) \in V^{m}}{\Card \{y_1, \ldots, y_{m-1}\} =  \Card \{y_1, \ldots, y_{m}\} = m - (\ell - 1)},$$
+    de sorte que
+    $$(C_{\ell - 1} = m) = \bigsqcup_{\mathbf{y} \in \mathcal{A}_m} (\mathbf{Y} = \mathbf{y}).$$ 
+    Notons aussi $\mathcal{B}_{n}(U)$ l'ensemble des $n$-uplets injectifs à valeurs dans $V \setminus U$. On a :
+    \begin{align*}
+        \P((C_\ell - C_{\ell - 1} > n) \cap (C_{\ell - 1} = m)) & = \sum_{(y_1, \ldots, y_n) \in \mathcal{A}_m} \P\left((C_\ell - C_{\ell - 1} > n) \cap \bigcap_{1 \leq t \leq m}(Y_t = y_t)\right)\\
+        & = \sum_{\substack{
+            (y_1, \ldots, y_m) \in \mathcal{A}_m\\
+            (y_{m+1}, \ldots, y_{m+n}) \in \mathcal{B}_n(\{y_1, \ldots, y_m\})
+            }}
+            \P\left(\bigcap_{1 \leq t \leq m + n}(Y_t = y_t)\right)\\
+        & = \sum_{\substack{
+            (y_1, \ldots, y_m) \in \mathcal{A}_m\\
+            (y_{m+1}, \ldots, y_{m+n}) \in \mathcal{B}_n(\{y_1, \ldots, y_m\})
+            }}
+            \prod_{1 \leq t \leq m+n}\P(Y_t = y_t)\\
+        & = \sum_{\substack{
+            (y_1, \ldots, y_m) \in \mathcal{A}_m\\
+            (y_{m+1}, \ldots, y_{m+n}) \in \mathcal{B}_n(\{y_1, \ldots, y_m\})
+            }}
+            \frac{1}{N^{m+n}}\\
+        & =  \frac{1}{N^{m+n}} \sum_{(y_1, \ldots, y_m) \in \mathcal{A}_m} \Card \mathcal{B}_n(\{y_1, \ldots, y_m\})\\
+        & = \frac{1}{N^{m+n}} \sum_{(y_1, \ldots, y_m) \in \mathcal{A}_m} n! \binom{N - (m - (\ell - 1))}{n}\\
+        & = \frac{(N - m + \ell - 1)(N - m + \ell - 2) \cdots (N - m + \ell - n)}{N^n} \frac{\Card \mathcal{A}_m}{N^m}\\
+        & = \frac{(N - m + \ell - 1)(N - m + \ell - 2) \cdots (N - m + \ell - n)}{N^n} \P(C_{\ell - 1} = m).
+    \end{align*}
+    On trouve comme attendu :
+    \begin{equation}\label{eq:t3}
+        \P((C_\ell - C_{\ell - 1} > n) \mid (C_{\ell - 1} = m)) = \frac{(N - m + \ell - 1)(N - m + \ell - 2) \cdots (N - m + \ell - n)}{N^n}.
+    \end{equation}
+    On aurait pu démontrer ce fait de manière moins formelle, les idées essentielles étant que
+    \begin{itemize}
+        \item les $Y_t$ sont i.i.d. et suivent une loi uniforme sur $V$;
+        \item le cardinal de $\mathcal{B}_{n}(U)$ ne dépend que de $n$ et du cardinal de $U$, mais pas des valeurs de ses éléments.
+    \end{itemize}
+
+    \item[T4.] Nous allons légèrement améliorer le résultat de la première limite pour pouvoir en déduire la seconde. Soient $a, b$ des réels strictement positifs et $(a_N)_{N \geq 1}, (b_N)_{N \geq 1}$ des suites d'entiers telles que
+    $$a_N \equi{+\infty} aN^{1/2} \quad \text{et} \quad b_N \equi{+\infty} bN^{1/2}.$$
+    D'après la question précédente, on a :
+    \begin{IEEEeqnarray*}{rCl}
+        \P((C_\ell - C_{\ell - 1} > b_N) \mid (C_{\ell - 1} = a_{N})) & = & \frac{(N - a_{N} + \ell - 1)(N - a_{N} + \ell - 2) \cdots (N - a_{N} + \ell - b_{N})}{N^{b_{N}}}\\
+        & = & \frac{(N - (a_{N} - (\ell - 1)))!}{N^{b_{N}} (N - b_{N} - (a_{N} - (\ell - 1))) !}\\
+    \end{IEEEeqnarray*}
+    Posons, pour $N \geq 1$
+    \begin{IEEEeqnarray*}{rCl}
+        u_N & = & N - (a_{N} - (\ell - 1))\\
+        v_N & = & N - b_{N} - (a_{N} - (\ell - 1)).
+    \end{IEEEeqnarray*}
+    D'après la formule de Stirling, on a :
+    \begin{IEEEeqnarray*}{rCl}
+        \P((C_\ell - C_{\ell - 1} > b_N) \mid (C_{\ell - 1} = a_{N})) & \equi{+\infty} & \frac{\sqrt{2\pi u_n}}{\sqrt{2\pi v_n}} \frac{\exp \left[u_n \log u_n - u_n\right]}{\exp\left[b_{N} \log N + v_n \log v_n - v_n\right]}\\
+        & \sim & \exp \left[u_n \log u_n + v_n - u_n - b_{N} \log N - v_n \log v_n\right].
+    \end{IEEEeqnarray*} 
+    On cherche un développement asymptotique en $o(1)$ de l'argument de l'exponentielle. On procède par étapes :
+    \begin{IEEEeqnarray*}{rCl}
+        \log u_n & = & \log N - \frac{a_{N} - (\ell - 1)}{N} - \frac{(a_{N} - (\ell - 1))^{2}}{2N^{2}} + o(1/N)\\
+        & = & \log N - \frac{a_{N} - (\ell - 1)}{N} - \frac{(aN^{1/2} + o(N^{1/2}))^{2}}{2N^{2}} + o(1/N)\\
+        & = & \log N - \frac{a_{N} - (\ell - 1)}{N} - \frac{a^{2}}{2N} + o(1/N).\\
+    \end{IEEEeqnarray*}
+    De même,
+    \begin{IEEEeqnarray*}{rCl}
+        \log v_n & = & \log N - \frac{b_{N} + a_{N} - (\ell - 1)}{N} - \frac{(b_{N} + a_{N} - (\ell - 1))^{2}}{2N^{2}} + o(1/N)\\
+        & = & \log N - \frac{b_{N} + a_{N} - (\ell - 1)}{N} - \frac{(a+b)^{2}}{2N} + o(1/N).\\
+    \end{IEEEeqnarray*}
+    Puis
+    \begin{IEEEeqnarray*}{rCl}
+        \log u_n - \log v_n & = & \frac{b_{N}}{N} + \frac{b(2a+b)}{2N} + o(1/N).\\
+    \end{IEEEeqnarray*}
+    D'où, en utilisant le fait que $a_{N} = aN^{1/2} + o(N^{1/2})$ et $b_{N} = bN^{1/2} + o(N^{1/2})$
+    \begin{IEEEeqnarray}{rCl}
+        v_n (\log u_n - \log v_n) & = & b_{N} + \frac{b(2a+b)}{2} - \frac{b_{N} (b_{N} + a_{N})}{N} + o(1)\nonumber\\
+        & = & b_{N} + \frac{b(2a+b)}{2} - b(a+b) + o(1)\nonumber\\
+        \label{eq:a1}
+        & = & b_{N} - \frac{b^{2}}{2} + o(1).
+    \end{IEEEeqnarray}
+    De plus, pour la même raison,
+    \begin{IEEEeqnarray}{rCl}\label{eq:a2}
+        b_{N} \log u_n & = & b_{N} \log N - ab + o(1).
+    \end{IEEEeqnarray}
+    Enfin, en utilisant les développements asymptotiques précédents (\ref{eq:a1} et \ref{eq:a2})
+    \begin{IEEEeqnarray*}{rCl}
+        u_n \log u_n + v_n - u_n - b_{N} \log N - v_n \log v_n & = & v_n (\log u_n - \log v_n) + b_{N} \log u_n - b_{N} - b_{N} \log N\\
+        & = & b_{N} - \frac{b^{2}}{2} + b_{N} \log N - ab  - b_{N} - b_{N} \log N + o(1)\\
+        & = & - ab - \frac{b^{2}}{2} + o(1).
+    \end{IEEEeqnarray*}
+    Cela montre que
+    \begin{equation}\label{eq:t4a}
+        \P((C_\ell - C_{\ell - 1} > b_N) \mid (C_{\ell - 1} = a_{N})) \xrightarrow[N \to +\infty]{} e^{-ab-b^{2}/2}.
+    \end{equation}
+    \'Etudions maintenant la suite 
+    $$\P \left(\left(\frac{C_{\ell}^{2} - C_{\ell - 1}^{2}}{2N} > y\right) \middle| \left(\frac{C_{\ell - 1}^{2}}{2N} = \frac{\lfloor(2Nx)^{1/2}\rfloor^{2}}{2N}\right)\right)$$
+    où $x, y > 0$. On écrit pour cela
+    \begin{IEEEeqnarray*}{rCl}
+        \IEEEeqnarraymulticol{3}{l}{
+        \P\left(\left(\frac{C_{\ell}^{2} - C_{\ell - 1}^{2}}{2N} > y\right) \middle| \left(\frac{C_{\ell - 1}^{2}}{2N} = \frac{\lfloor(2Nx)^{1/2}\rfloor^{2}}{2N}\right)\right)
+         }\\
+        & = & \P\left(C_{\ell} > \left(\lfloor(2Nx)^{1/2}\rfloor^{2} + (2Ny)\right)^{1/2} \middle|C_{\ell - 1} = \lfloor(2Nx)\rfloor^{1/2}\right)\\
+        & = & \P\left(C_{\ell} - C_{\ell - 1} > \left(\lfloor(2Nx)^{1/2}\rfloor^{2} + (2Ny)\right)^{1/2} - \lfloor(2Nx)^{1/2}\rfloor\middle|  C_{\ell - 1} = \lfloor(2Nx)^{1/2}\rfloor\right).\\
+    \end{IEEEeqnarray*}
+    Or,
+    $$\lfloor(2Nx)^{1/2}\rfloor \equi{+\infty} (2Nx)^{1/2}$$
+    et
+    \begin{IEEEeqnarray*}{rCl}
+        \left(\lfloor(2Nx)^{1/2}\rfloor^{2} + (2Ny)\right)^{1/2} - \lfloor(2Nx)^{1/2}\rfloor & = & \left(2N(x+y) + o(N)\right)^{1/2} - (2Nx)^{1/2} + o(N^{1/2})\\
+        & = & (2N)^{1/2}\left[(x+y)^{1/2} - x^{1/2}\right] + o(N^{1/2}).
+    \end{IEEEeqnarray*}
+    On peut donc appliquer (\ref{eq:t4a}) avec $a = (2x)^{1/2}$ et $b = 2^{1/2}\left[(x+y)^{1/2} - x^{1/2}\right]$. On a 
+    $$ab + b^{2}/2 = 2\left[x(x+y)\right]^{1/2} - 2x + (x+y) - 2\left[x(x+y)\right]^{1/2} + x = y,$$
+    ce qui donne 
+    \begin{equation}\label{eq:t4b}
+        \P\left(\left(\frac{C_{\ell}^{2} - C_{\ell - 1}^{2}}{2N} > y\right) \middle| \left(\frac{C_{\ell - 1}^{2}}{2N} = \frac{\lfloor(2Nx)^{1/2}\rfloor^{2}}{2N}\right)\right) \xrightarrow[N \to +\infty]{} e^{-y}.
+    \end{equation}
+\end{description}
+
+\end{document}
