@@ -37,17 +37,40 @@
 \renewcommand{\leq}{\leqslant}
 \renewcommand{\geq}{\geqslant}
 
+\theoremstyle{plain}
+\newtheorem{thm}{Théorème}
+\newtheorem{coro}{Corollaire}
+
 \title{Estimation de la taille d'un graphe par marches aléatoires}
 \author{Matthieu \textsc{Dinot}, Dorian \textsc{Boully}}
 \date{}
 
 \begin{document}
 \maketitle
-\section*{Préliminaires}
-Montrons deux résultats permettant de légitimer les hypothèses faites dans \textbf{T2} et \textbf{T3}.
-\subsection*{Spectre de la matrice d'adjacence d'un graphe $d$-régulier connexe}
-\subsection*{Une interversion de limites}
+\section*{Préliminaire : spectre des matrices à coefficients positifs}
+Pour une matrice réelle $X$ de taille quelconque (en particulier $X$ peut être un vecteur de $\R^{N}$ ou une matrice $(N,N)$), on note $X \geq 0$ lorsque tous ses coefficients sont positifs ou nuls, et $X > 0$ lorsque tous ses coefficients sont strictement positifs.
+\begin{thm}[Perron--Frobenius]
+    Soit $A > 0 \in \mathcal{M}_N (\R)$. Alors
+    \begin{itemize}
+        \item $A$ possède une valeur propre réelle $\lambda > 0$ telle que toutes les autres valeurs propres de $A$ sont de module strictement inférieur à $\lambda$. On dit que $\lambda$ est dominante
+        \item Il existe un vecteur propre $X > 0$ associé à la valeur propre $\lambda$.
+        \item $\lambda$ est une valeur propre simple de $A$, c'est à dire que sa multiplicité en tant que racine du polynôme caractéristique de $A$ vaut $1$. En particulier, le sous espace propre associé à $\lambda$ est de dimension $1$.
+    \end{itemize}
+\end{thm}
+Ce théorème nous est utile pour étudier le spectre des matrices stochastiques. Une matrice $A \in \mathcal{M}_N (\R)$ est dite stochastique lorsque $A \geq 0$ et 
+$$\forall i \in \{1, \ldots, N\}, \quad \sum_{j = 1}^{N} A(i,j) = 1.$$ 
+\begin{coro}\label{coro}
+    Soit $A$ une matrice stochastique. On suppose qu'il existe un entier $k$ tel que $A^{k} > 0$ ($A$ est alors dite régulière). Alors $1$ est valeur propre simple et dominante de $A$.
+\end{coro}
+Il est possible d'appliquer ces résultats à l'étude d'une marche aléatoire sur un graphe $G = (V, E)$ de taille $N$ (orienté ou non). On peut définir une telle marche aléatoire à l'aide d'une matrice de transition $P$ telle que le coefficient $P(i,j)$ est la probabilité de passer du sommet $j$ au sommet $i$. On impose la contrainte $P(i,j) \neq 0$ si et seulement si $(j,i) \in E$. Ainsi $P$ représente bien une marche aléatoire sur le graphe $G$. On remarque que $P^{\top}$ est stochastique et que si $\pi_t$ représente le vecteur probabilité de présence à l'instant $t$, on a
+$$\pi_{t+1} = P \pi_t.$$
+
+Regardons maintenant sous quelles conditions il est possible d'appliquer le corollaire \ref{coro} à une matrice de transition $P$. Remarquons pour cela que $P^{k}(i,j)$ est non nul si et seulement si il existe un chemin de longueur $k$ de $j$ vers $i$ dans le graphe $G$. En effet, on a
+$$P^{k}(i,j) = \sum_{l_1, \ldots, l_{k-1}} P(i,l_1)P(l_1, l_2)\cdots P(l_{k-1},j).$$
+Chaque terme de cette somme est non nul lorsque $j \to l_{k-1} \to \cdots \to l_1 \to i$ est un chemin dans le graphe G. Comme $P \geq 0$, $P^{k}(i,j)$ est non nul si et seulement si au moins un terme de la somme est non nul, ce qui permet de conclure. Pour que $P$ soit régulière, il faut donc que $G$ soit connexe, mais cela ne suffit pas. Par exemple, si l'on prend un graphe biparti, les chemins de longueur paire ont un départ et une arrivée dans la même \og{}partie \fg{} du graphe, donc $P^{k}$ n'aura jamais tous ses coefficients non nuls. D'ailleurs, comme indiqué dans l'énoncé (\textbf{S1}), si $P$ représente une marche aléatoire sur un graphe biparti, où le choix du sommet au temps $t+1$ se fait uniformément parmi les voisins du sommet au temps $t$, alors $-1$ est dans le spectre de $P$. Par contre, une matrice de transition $P$ sur un graphe connexe tel que tout sommet est relié à lui même est régulière. En effet, comme le graphe est connexe, il existe un entier $k$ tel que pour tout $(i,j) \in V^2$, il existe un chemin de $j$ vers $i$ de longueur au plus $k$. En ajoutant autant de fois que nécessaire l'arête $(j,j)$ au début du chemin, on trouve un chemin de longueur exactement $k$. Justement, le fait de considérer des marches aléatoires paresseuses revient à ajouter toutes les arêtes $(j,j), \; j \in V$ au graphe étudié, ce qui ne change bien entendu pas sa taille et permet de garantir que $1$ est valeur propre dominante et simple. 
 \section{Partie théorique}
+Les questions suivantes restent valables dans le cas plus général d'une marche aléatoire sur un graphe $G$ non orienté connexe quelconque (pas forcément régulier) représentée par une matrice de transition (symétrique) $P$ dont $1$ est valeur propre simple et dominante.
+
 \begin{description}
     \item[T1.\label{q:t1}] Soient $s \in \{0, \ldots, \tau - 1\}$ et $i \in V$. On a :
     \begin{align*}
@@ -94,28 +117,28 @@ Montrons deux résultats permettant de légitimer les hypothèses faites dans \t
     de sorte que
     $$(C_{\ell - 1} = m) = \bigsqcup_{\mathbf{y} \in \mathcal{A}_m} (\mathbf{Y} = \mathbf{y}).$$ 
     Notons aussi $\mathcal{B}_{n}(U)$ l'ensemble des $n$-uplets injectifs à valeurs dans $V \setminus U$. On a :
-    \begin{align*}
-        \P((C_\ell - C_{\ell - 1} > n) \cap (C_{\ell - 1} = m)) & = \sum_{(y_1, \ldots, y_n) \in \mathcal{A}_m} \P\left((C_\ell - C_{\ell - 1} > n) \cap \bigcap_{1 \leq t \leq m}(Y_t = y_t)\right)\\
+    \begin{align}
+        \P((C_\ell - C_{\ell - 1} > n) \cap (C_{\ell - 1} = m)) & = \sum_{(y_1, \ldots, y_n) \in \mathcal{A}_m} \P\left((C_\ell - C_{\ell - 1} > n) \cap \bigcap_{1 \leq t \leq m}(Y_t = y_t)\right)\nonumber\\
         & = \sum_{\substack{
             (y_1, \ldots, y_m) \in \mathcal{A}_m\\
             (y_{m+1}, \ldots, y_{m+n}) \in \mathcal{B}_n(\{y_1, \ldots, y_m\})
             }}
-            \P\left(\bigcap_{1 \leq t \leq m + n}(Y_t = y_t)\right)\\
-        & = \sum_{\substack{
+            \P\left(\bigcap_{1 \leq t \leq m + n}(Y_t = y_t)\right)\nonumber\\
+         &\label{eq:avant_lim_tau} = \sum_{\substack{
             (y_1, \ldots, y_m) \in \mathcal{A}_m\\
             (y_{m+1}, \ldots, y_{m+n}) \in \mathcal{B}_n(\{y_1, \ldots, y_m\})
             }}
             \prod_{1 \leq t \leq m+n}\P(Y_t = y_t)\\
-        & = \sum_{\substack{
+         &\label{eq:apres_lim_tau} = \sum_{\substack{
             (y_1, \ldots, y_m) \in \mathcal{A}_m\\
             (y_{m+1}, \ldots, y_{m+n}) \in \mathcal{B}_n(\{y_1, \ldots, y_m\})
             }}
             \frac{1}{N^{m+n}}\\
-        & =  \frac{1}{N^{m+n}} \sum_{(y_1, \ldots, y_m) \in \mathcal{A}_m} \Card \mathcal{B}_n(\{y_1, \ldots, y_m\})\\
-        & = \frac{1}{N^{m+n}} \sum_{(y_1, \ldots, y_m) \in \mathcal{A}_m} n! \binom{N - (m - (\ell - 1))}{n}\\
-        & = \frac{(N - m + \ell - 1)(N - m + \ell - 2) \cdots (N - m + \ell - n)}{N^n} \frac{\Card \mathcal{A}_m}{N^m}\\
-        & = \frac{(N - m + \ell - 1)(N - m + \ell - 2) \cdots (N - m + \ell - n)}{N^n} \P(C_{\ell - 1} = m).
-    \end{align*}
+        & =  \frac{1}{N^{m+n}} \sum_{(y_1, \ldots, y_m) \in \mathcal{A}_m} \Card \mathcal{B}_n(\{y_1, \ldots, y_m\})\nonumber\\
+        & = \frac{1}{N^{m+n}} \sum_{(y_1, \ldots, y_m) \in \mathcal{A}_m} n! \binom{N - (m - (\ell - 1))}{n}\nonumber\\
+        & = \frac{(N - m + \ell - 1)(N - m + \ell - 2) \cdots (N - m + \ell - n)}{N^n} \frac{\Card \mathcal{A}_m}{N^m}\nonumber\\
+        & = \frac{(N - m + \ell - 1)(N - m + \ell - 2) \cdots (N - m + \ell - n)}{N^n} \P(C_{\ell - 1} = m).\nonumber
+    \end{align}
     On trouve comme attendu :
     \begin{equation}\label{eq:t3}
         \P((C_\ell - C_{\ell - 1} > n) \mid (C_{\ell - 1} = m)) = \frac{(N - m + \ell - 1)(N - m + \ell - 2) \cdots (N - m + \ell - n)}{N^n}.
@@ -125,6 +148,10 @@ Montrons deux résultats permettant de légitimer les hypothèses faites dans \t
         \item les $Y_t$ sont i.i.d. et suivent une loi uniforme sur $V$;
         \item le cardinal de $\mathcal{B}_{n}(U)$ ne dépend que de $n$ et du cardinal de $U$, mais pas des valeurs de ses éléments.
     \end{itemize}
+
+    Si l'on ne fait pas l'approximation de remplacer les variables $Y_t$ par des variables uniformément distribuées sur $V$, il n'y a pas égalité entre les lignes (\ref{eq:avant_lim_tau}) et (\ref{eq:apres_lim_tau}). Cependant, la question \textbf{T2} montre que la ligne (\ref{eq:apres_lim_tau}) est la limite de la ligne (\ref{eq:avant_lim_tau}) lorsque $\tau$ tend vers l'infini. Ainsi, pour être tout à fait précis, on a montré que
+    $$\lim_{\tau\to +\infty}\P((C_\ell - C_{\ell - 1} > n) \mid (C_{\ell - 1} = m)) = \frac{(N - m + \ell - 1)(N - m + \ell - 2) \cdots (N - m + \ell - n)}{N^n}.$$
+    L'approximation est donc raisonnable jusqu'ici.
 
     \item[T4.] Nous allons légèrement améliorer le résultat de la première limite pour pouvoir en déduire la seconde. Soient $a, b$ des réels strictement positifs et $(a_N)_{N \geq 1}, (b_N)_{N \geq 1}$ des suites d'entiers telles que
     $$a_N \equi{+\infty} aN^{1/2} \quad \text{et} \quad b_N \equi{+\infty} bN^{1/2}.$$
