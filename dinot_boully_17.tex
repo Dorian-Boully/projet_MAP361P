@@ -140,38 +140,38 @@ Montrons deux résultats permettant de légitimer les hypothèses faites dans \t
     \end{IEEEeqnarray*}
     D'après la formule de Stirling, on a :
     \begin{IEEEeqnarray*}{rCl}
-        \P((C_\ell - C_{\ell - 1} > b_N) \mid (C_{\ell - 1} = a_{N})) & \equi{+\infty} & \frac{\sqrt{2\pi u_n}}{\sqrt{2\pi v_n}} \frac{\exp \left[u_n \log u_n - u_n\right]}{\exp\left[b_{N} \log N + v_n \log v_n - v_n\right]}\\
-        & \sim & \exp \left[u_n \log u_n + v_n - u_n - b_{N} \log N - v_n \log v_n\right].
+        \P((C_\ell - C_{\ell - 1} > b_N) \mid (C_{\ell - 1} = a_{N})) & \equi{+\infty} & \frac{\sqrt{2\pi u_N}}{\sqrt{2\pi v_N}} \frac{\exp \left[u_N \log u_N - u_N\right]}{\exp\left[b_{N} \log N + v_N \log v_N - v_N\right]}\\
+        & \sim & \exp \left[u_N \log u_N + v_N - u_N - b_{N} \log N - v_N \log v_N\right].
     \end{IEEEeqnarray*} 
     On cherche un développement asymptotique en $o(1)$ de l'argument de l'exponentielle. On procède par étapes :
     \begin{IEEEeqnarray*}{rCl}
-        \log u_n & = & \log N - \frac{a_{N} - (\ell - 1)}{N} - \frac{(a_{N} - (\ell - 1))^{2}}{2N^{2}} + o(1/N)\\
+        \log u_N & = & \log N - \frac{a_{N} - (\ell - 1)}{N} - \frac{(a_{N} - (\ell - 1))^{2}}{2N^{2}} + o(1/N)\\
         & = & \log N - \frac{a_{N} - (\ell - 1)}{N} - \frac{(aN^{1/2} + o(N^{1/2}))^{2}}{2N^{2}} + o(1/N)\\
         & = & \log N - \frac{a_{N} - (\ell - 1)}{N} - \frac{a^{2}}{2N} + o(1/N).\\
     \end{IEEEeqnarray*}
     De même,
     \begin{IEEEeqnarray*}{rCl}
-        \log v_n & = & \log N - \frac{b_{N} + a_{N} - (\ell - 1)}{N} - \frac{(b_{N} + a_{N} - (\ell - 1))^{2}}{2N^{2}} + o(1/N)\\
+        \log v_N & = & \log N - \frac{b_{N} + a_{N} - (\ell - 1)}{N} - \frac{(b_{N} + a_{N} - (\ell - 1))^{2}}{2N^{2}} + o(1/N)\\
         & = & \log N - \frac{b_{N} + a_{N} - (\ell - 1)}{N} - \frac{(a+b)^{2}}{2N} + o(1/N).\\
     \end{IEEEeqnarray*}
     Puis
     \begin{IEEEeqnarray*}{rCl}
-        \log u_n - \log v_n & = & \frac{b_{N}}{N} + \frac{b(2a+b)}{2N} + o(1/N).\\
+        \log u_N - \log v_N & = & \frac{b_{N}}{N} + \frac{b(2a+b)}{2N} + o(1/N).\\
     \end{IEEEeqnarray*}
     D'où, en utilisant le fait que $a_{N} = aN^{1/2} + o(N^{1/2})$ et $b_{N} = bN^{1/2} + o(N^{1/2})$
     \begin{IEEEeqnarray}{rCl}
-        v_n (\log u_n - \log v_n) & = & b_{N} + \frac{b(2a+b)}{2} - \frac{b_{N} (b_{N} + a_{N})}{N} + o(1)\nonumber\\
+        v_N (\log u_N - \log v_N) & = & b_{N} + \frac{b(2a+b)}{2} - \frac{b_{N} (b_{N} + a_{N})}{N} + o(1)\nonumber\\
         & = & b_{N} + \frac{b(2a+b)}{2} - b(a+b) + o(1)\nonumber\\
         \label{eq:a1}
         & = & b_{N} - \frac{b^{2}}{2} + o(1).
     \end{IEEEeqnarray}
     De plus, pour la même raison,
     \begin{IEEEeqnarray}{rCl}\label{eq:a2}
-        b_{N} \log u_n & = & b_{N} \log N - ab + o(1).
+        b_{N} \log u_N & = & b_{N} \log N - ab + o(1).
     \end{IEEEeqnarray}
     Enfin, en utilisant les développements asymptotiques précédents (\ref{eq:a1} et \ref{eq:a2})
     \begin{IEEEeqnarray*}{rCl}
-        u_n \log u_n + v_n - u_n - b_{N} \log N - v_n \log v_n & = & v_n (\log u_n - \log v_n) + b_{N} \log u_n - b_{N} - b_{N} \log N\\
+        u_N \log u_N + v_N - u_N - b_{N} \log N - v_N \log v_N & = & v_N (\log u_N - \log v_N) + b_{N} \log u_N - b_{N} - b_{N} \log N\\
         & = & b_{N} - \frac{b^{2}}{2} + b_{N} \log N - ab  - b_{N} - b_{N} \log N + o(1)\\
         & = & - ab - \frac{b^{2}}{2} + o(1).
     \end{IEEEeqnarray*}
