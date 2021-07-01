@@ -15,7 +15,7 @@
     itemsep=\parskip,
 }
 
-\newcommand{\ens}[3][\vert]{
+\newcommand{\ens}[3][\middle|]{
     \left\{#2 \;\, #1 \; #3\right\}
 }
 \DeclareMathOperator{\Card}{\mathrm{Card}}
@@ -48,13 +48,13 @@
 \begin{document}
 \maketitle
 \section*{Préliminaire : spectre des matrices à coefficients positifs}
-Pour une matrice réelle $X$ de taille quelconque (en particulier $X$ peut être un vecteur de $\R^{N}$ ou une matrice $(N,N)$), on note $X \geq 0$ lorsque tous ses coefficients sont positifs ou nuls, et $X > 0$ lorsque tous ses coefficients sont strictement positifs.
-\begin{thm}[Perron--Frobenius]
+Pour une matrice réelle $X$ de taille quelconque (en particulier $X$ peut être un vecteur de $\R^{N}$ ou une matrice $(N,N)$), on note $X \geq 0$ lorsque tous ses coefficients sont positifs ou nuls, et $X > 0$ lorsque tous ses coefficients sont strictement positifs. On désigne par $X(i,j)$ le coefficient d'indice $(i,j)$ de $X$, et si $X$ est un vecteur de $\R^{N}$, on note $X(i)$ au lieu de $X(i,0)$.
+\begin{thm}[Perron--Frobenius]\label{th:pf}
     Soit $A > 0 \in \mathcal{M}_N (\R)$. Alors
     \begin{itemize}
-        \item $A$ possède une valeur propre réelle $\lambda > 0$ telle que toutes les autres valeurs propres de $A$ sont de module strictement inférieur à $\lambda$. On dit que $\lambda$ est dominante
-        \item Il existe un vecteur propre $X > 0$ associé à la valeur propre $\lambda$.
-        \item $\lambda$ est une valeur propre simple de $A$, c'est à dire que sa multiplicité en tant que racine du polynôme caractéristique de $A$ vaut $1$. En particulier, le sous espace propre associé à $\lambda$ est de dimension $1$.
+        \item $A$ possède une valeur propre réelle $\rho > 0$ telle que toutes les autres valeurs propres de $A$ sont de module strictement inférieur à $\rho$. On dit que $\rho$ est dominante
+        \item Il existe un vecteur propre $X > 0$ associé à la valeur propre $\rho$.
+        \item $\rho$ est une valeur propre simple de $A$, c'est à dire que sa multiplicité en tant que racine du polynôme caractéristique de $A$ vaut $1$. En particulier, le sous espace propre associé à $\rho$ est de dimension $1$.
     \end{itemize}
 \end{thm}
 Ce théorème nous est utile pour étudier le spectre des matrices stochastiques. Une matrice $A \in \mathcal{M}_N (\R)$ est dite stochastique lorsque $A \geq 0$ et 
@@ -62,6 +62,72 @@ $$\forall i \in \{1, \ldots, N\}, \quad \sum_{j = 1}^{N} A(i,j) = 1.$$
 \begin{coro}\label{coro}
     Soit $A$ une matrice stochastique. On suppose qu'il existe un entier $k$ tel que $A^{k} > 0$ ($A$ est alors dite régulière). Alors $1$ est valeur propre simple et dominante de $A$.
 \end{coro}
+
+\begin{proof}[\emph{\textbf{Preuve du théorème \ref{th:pf}}}]
+    Soit $\norm{\cdot}$ une norme sur $\R^{N}$. Posons $\mathcal{S} = \ens{X \in \R^N}{X \geq 0 \text{ et } \norm{X} = 1}$, qui est compact car fermé borné de $\R^N$, et $\Lambda = \ens{\lambda \in \R}{\exists X \in \mathcal{S}, \; (A - \lambda I)X \geq 0}$. On voit que $0 \in \Lambda$ et que $\Lambda$ est majoré par la somme des coefficients de $A$. Soit donc $\rho = \sup \Lambda \in \R$. Il existe des suites $(\lambda_n) \in \Lambda^{\N}$ et $(X_n) \in \mathcal{S}^{\N}$ telles que
+    $$\lambda_n \xrightarrow[n \to + \infty]{} \rho \quad \text{et} \quad \forall n \in \N, \; (A - \lambda_n I) X_n \geq 0.$$
+    $\mathcal{S}$ étant compact, on peut supposer quitte à extraire que $X_n$ converge vers $X \in \mathcal{S}$. En passant à la limite, il vient $(A - \rho I)X \geq 0$. Supposons que $(A - \rho I)X \neq 0$. Soit $Y = \frac{AX}{\norm{AX}} \in \mathcal{S}$. On a par construction $(A - \rho I)Y = \frac{1}{\norm{AX}}A(A - \rho I)X > 0$, et donc pour $\varepsilon > 0$ assez petit, $(A - (\rho + \varepsilon) I)Y > 0$, d'où $\rho + \varepsilon \in \Lambda$, ce qui est absurde. Ainsi, $AX = \rho X$. De plus $AX > 0$ car $A > 0$, $X \geq 0$ et $X \neq 0$, donc $\rho > 0$ et $X > 0$. $\rho$ est donc une valeur propre strictement positive de $A$ et il existe un vecteur propre $X > 0$ associé à $\rho$.
+
+    Montrons que $\rho$ est dominante. Soit $\lambda \in \C$ une valeur propre de $A$ distincte de $\rho$, et $Z \in \C^N$ un vecteur propre associé à $\lambda$. On a
+    $$\forall i, \quad \sum_j A(i,j)Z(j) = \lambda Z(i) \quad \text{donc} \quad \forall i, \quad  \module{\lambda}\module{Z(i)} \leq \sum_j A(i,j) \module{Z(j)}.$$ Ainsi, $\module{\lambda} \in \Lambda$, donc $\module{\lambda} \leq \rho$. Montrons que l'inégalité est stricte. Pour cela, on suppose par l'absurde que $\module{\lambda} = \module{\rho}$. En notant $\module{Z}$ le vecteur dont chaque composante est $\module{Z(i)}$, on a $(A - \module{\lambda}I)\module{Z} \geq 0$. Si $(A - \module{\lambda}I)\module{Z} \neq 0$, alors $(A - \module{\lambda}I)A\module{Z} > 0$ et par suite $\module{\lambda} < \rho$, ce qui est contraire aux hypothèses. Donc 
+    $$\forall i, \quad \module{\lambda}\module{Z(i)} = \sum_j A(i,j) \module{Z(j)}.$$ Mais alors il existe $X \geq 0$, $X \neq 0$ et $\theta \in \R$ tels que $Z = e^{i\theta}X$. On en déduit que $AX = \lambda X$, et donc que $\lambda$ est réelle, et strictement positive. On a donc $\lambda = \module{\lambda} = \rho$, ce qui est absurde. $\rho$ est donc dominante.
+
+    Montrons enfin que $\rho$ est simple. On commence par montrer que l'espace propre $E_{\rho}$ est de dimension $1$. Si ce n'est pas le cas, il existe deux vecteurs propres $X > 0$ et $Y \neq 0$ associés à $\rho$ tels que $(X,Y)$ est libre. Quitte à changer $Y$ en $-Y$, on peut supposer qu'une de ses composantes est strictement positive. Le réel $\alpha := \min\ens[:]{X(i)/Y(i)}{1 \leq i \leq N \text{ et } Y(i) > 0}$ est bien défini et vérifie $X - \alpha Y \geq 0$ mais $X - \alpha Y \ngtr 0$. Or, $X - \alpha Y$ est encore un vecteur propre de $A$ associé à $\rho$ (il est non nul par liberté de $(X, y)$), et $A > 0$ donc
+    $$\rho (X - \alpha Y) = A(X - \alpha Y) > 0,$$
+    ce qui est en contradiction avec $X - \alpha Y \ngtr 0$. Ainsi, $E_{\rho}$ est de dimension $1$. On améliore maintenant le résultat en montrant que $\rho$ est simple. Soit $(X_1 = X, \ldots, X_N)$ une base de $\R^{\N}$ qui complète un vecteur propre $X > 0$ associé à $\rho$. En notant $P$ la matrice dont la $i$-ième colonne est $X_i$, on a 
+    $$P^{-1}AP = 
+    \left(
+    \begin{array}{c|ccc}
+        \rho   & \star & \cdots & \star\\
+         \hline
+        0      &       &        &\\
+        \vdots &       & B      &\\
+        0      &       &        &
+    \end{array}
+    \right), \qquad \text{avec } B \in \mathcal{M}_{N - 1}(\R).$$
+    Les polynômes caractéristiques $\chi_A$ et $\chi_B$ de $A$ et $B$ vérifient $\chi_A = (X - \rho) \chi_B$. Supposons que $\rho$ est racine d'ordre au moins $2$ de $\chi_A$. Alors $\rho$ est racine de $\chi_B$, donc valeur propre de $B$. Soit $Z \in \R^{N-1}$ un vecteur propre de $B$ associé à $\rho$. En posant $Y = P\begin{pmatrix} 0\\ Z \end{pmatrix}$, il vient
+    $$AY = P 
+    \left(
+    \begin{array}{c|ccc}
+        \rho   & \star & \cdots & \star\\
+            \hline
+        0      &       &        &\\
+        \vdots &       & B      &\\
+        0      &       &        &
+    \end{array}
+    \right)
+    \begin{pmatrix} 0\\ Z \end{pmatrix}
+    = P\begin{pmatrix}\alpha\\B Z\end{pmatrix}
+    = P\begin{pmatrix}\alpha\\\rho Z\end{pmatrix}
+    = \rho Y + \alpha X.$$
+    Le réel $\alpha$ est non nul sinon $(X, Y)$ formerait une famille libre de vecteurs propres de $A$ associés à $\rho$. De plus, une récurrence immédiate donne $A^k Y = \rho^k Y + k\alpha \rho^{k-1}X$ pour $k \geq 0$, et donc
+    $$A^k \module{Y} \geq \module{A^k Y} = \module{\rho^k Y + k\alpha \rho^{k-1}X} \geq \rho^{k-1}(k\module{\alpha} \module{X} - \rho \module{Y}) = \rho^{k-1}(k\module{\alpha} X - \rho \module{Y}).$$
+    Comme $\alpha \neq 0$ et $X > 0$, on peut prendre $k$ suffisament grand pour que $k\alpha X - \rho \module{Y} > \rho Y$. On obtient $A^k \module{Y} > \rho^k \module{Y}$. Comme $A^k > 0$, on en déduit en appliquant le début de la preuve que $A^k$ possède une valeur propre strictement supérieure à $\rho ^k$. C'est absurde car toute valeur propre de $A^k$ est de la forme $\lambda^k$ avec $\lambda$ valeur propre de $A$ (par trigonalisation de $A$). On a donc montré que $\rho$ est racine d'ordre $1$ de $\chi_A$. Cela achève la preuve.
+\end{proof}
+
+\begin{proof}[\emph{\textbf{Preuve du corollaire \ref{coro}}}]
+    Remarquons qu'une matrice $M$ est stochastique si et seulement si le veteur $U := (1, \ldots, 1)^{\top}$ vérifie $MU = U$. On en déduit facilement q'un produit de matrices stochastiques est stochastique. De plus, on a :
+    $$\forall X \in \R^N, \forall i, \quad \module{(MX)(i)} = \module{\sum_j M(i,j)X(j)} \leq \sum_j M(i,j)\module{X(j)} \leq \sum_j M(i,j)\norm{X}_{\infty} = \norm{X}_{\infty}$$ donc $\norm{M} \leq 1$. Soit $k$ tel que $A^{k} > 0$. Comme $A^k > 0$, le théorème de Perron--Frobenius s'applique. Le fait que $\norm{A^k} \leq 1$ entraine $\rho \leq 1$, mais on a aussi $\rho \geq 1$ car $A^k U = U$. Donc $\rho = 1$. Ainsi, $1$ est valeur propre simple et dominante de $A^k$. Puis on trigonalise $A$. Il existe une matrice inversible $P$ telle que 
+    $$A = P \left(
+        \begin{array}{cccc}
+            1      & \star     & \cdots & \star\\
+            0      & \lambda_2 & \ddots & \vdots\\
+            \vdots & \ddots    & \ddots & \star\\
+            0      & \cdots    & 0      & \lambda_{N}
+        \end{array}
+    \right) P^{-1}
+    \quad \text{ donc } \quad
+    A^k = P \left(
+        \begin{array}{cccc}
+            1      & \star     & \cdots & \star\\
+            0      & \lambda_{2}^{k} & \ddots & \vdots\\
+            \vdots & \ddots    & \ddots & \star\\
+            0      & \cdots    & 0      & \lambda_{N}^{k}
+        \end{array}
+    \right) P^{-1}.$$
+    On en déduit que pour $2 \leq i \leq N$, $\module{\lambda_{i}}^{k} < 1$, donc $\module{\lambda_{i}} < 1$. Ainsi, $1$ est valeur propre dominante de $A$ et l'espace propre associé est de dimension $1$. En reprenant la fin de la preuve du théorème de Perron--Frobenius, on montre que $1$ est en fait simple. D'où le résultat.
+\end{proof}
+
 Il est possible d'appliquer ces résultats à l'étude d'une marche aléatoire sur un graphe $G = (V, E)$ de taille $N$ (orienté ou non). On peut définir une telle marche aléatoire à l'aide d'une matrice de transition $P$ telle que le coefficient $P(i,j)$ est la probabilité de passer du sommet $j$ au sommet $i$. On impose la contrainte $P(i,j) \neq 0$ si et seulement si $(j,i) \in E$. Ainsi $P$ représente bien une marche aléatoire sur le graphe $G$. On remarque que $P^{\top}$ est stochastique et que si $\pi_t$ représente le vecteur probabilité de présence à l'instant $t$, on a
 $$\pi_{t+1} = P \pi_t.$$
 
