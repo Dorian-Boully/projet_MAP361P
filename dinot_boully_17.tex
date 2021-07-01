@@ -138,46 +138,38 @@ Chaque terme de cette somme est non nul lorsque $j \to l_{k-1} \to \cdots \to l_
 Les questions suivantes restent valables dans le cas plus général d'une marche aléatoire sur un graphe $G$ non orienté connexe quelconque (pas forcément régulier) représentée par une matrice de transition (symétrique) $P$ dont $1$ est valeur propre simple et dominante.
 
 \begin{description}
-    \item[T1.\label{q:t1}] Soient $s \in \{0, \ldots, \tau - 1\}$ et $i \in V$. On a :
+    \item[T1.\label{q:t1}] On note $\delta$ le symbole de Krönecker et $U = (\delta_{i,i_0})_{i \in V}$ le vecteur de probabilité à l'instant initial. Soient $s \in \{0, \ldots, \tau - 1\}$ et $i \in V$. On a :
     \begin{align*}
     \P(X_{s+1}^{t} = i) & = \sum_{j \in V} \P((X_{s+1}^{t} = i) \cap (X_{s}^{t} = j))\\
     & = \sum_{j \in V}  \frac{1}{d}\ind_{E}(i,j) \P (X_{s}^{t} = j)\\
-    & = \sum_{j \in V} P_{ij}\P (X_{s}^{t} = j).
+    & = \sum_{j \in V} P(i,j)\P (X_{s}^{t} = j).
     \end{align*}
-    Ainsi $\left(\P(X_{s+1}^{t} = i)\right)_{i \in V} = P \cdot (X_{s}^{t} = i)_{i \in V}$. Une récurrence immédiate montre alors que
+    Ainsi $\left(\P(X_{s+1}^{t} = i)\right)_{i \in V} = P \times (\P(X_{s}^{t} = i))_{i \in V}$. Une récurrence immédiate montre alors que
     \begin{equation}\label{eq:t1}
-    \pi = P^{\tau} \cdot (\delta_{i,i_0})_{i \in V}
+    \pi = P^{\tau}U.
     \end{equation}
-    où $\delta$ désigne le symbole de Krönecker.
 
-    \item[T2.\label{q:t2}] Le théorème spectral assure l'existence d'une matrice orthogonale $O$ telle que
+    \item[T2.\label{q:t2}] Modifions légèrement la notation de l'énoncé, on note $\pi_\tau$ la matrice $\pi$ de l'énoncé. Le théorème spectral assure l'existence d'une matrice orthogonale $O$ telle que
     \begin{equation*}\label{eq:diagonalisation}
     P = {}^{t}O \,\mathrm{Diag}(1,\lambda_2, \ldots, \lambda_N)\, O.
     \end{equation*}
      
-    Vu les valeurs propres de $P$, on voit que, pour une norme quelconque sur les matrices $(N,N)$ (en particulier la norme subordonnée à $\left\lVert \cdot \right\rVert_2$) :
+    Affranchissons nous de la norme $2$ qui est équivalente à la convergence terme à terme. Nous avons :
     
     \begin{equation*}\label{eq:limite_P}
-    P^{\tau} = {}^{t}O\Delta^{\tau}O \xrightarrow[\tau \to +\infty]{} P^{\infty} := {}^{t}O \,\mathrm{Diag}(1,0, \ldots, 0)\,O
+        P^{\tau} = O^\top \, \mathrm{Diag}(1, \lambda_2^\tau, \ldots, \lambda_N^\tau)\, O 
+        \to 
+        O^\top \,\mathrm{Diag}(1,0, \ldots, 0)\, O := P^{\infty}
     \end{equation*}
-    car la convergence a lieu coefficient par coefficient. La convergence de $(P^{\tau})_{\tau \geq 1}$ pour la norme subordonnée à $\norm{\cdot}_2$ entraine la convergence simple de la suite d'applications linéaires associées au sens de $\norm{\cdot}_2$ vers la même limite.
-    On peut conclure de deux manières :
-    \begin{itemize}
-        \item Via un calcul explicite :
-        \begin{equation*}
-        \pi = P^{\tau}(\delta_{i,i_0})_{i \in V} \xrightarrow[\tau \to +\infty]{} P^{\infty}(\delta_{i,i_0})_{i \in V} = O_{1i_0} {}^{t}O \,^{t}(1, 0, \ldots, 0) = O_{1i_0} O^{-1} \,^{t}(1, 0, \ldots, 0).
-        \end{equation*}
-        Or $O^{-1} \,^{t}(1, 0, \ldots, 0)$ est le vecteur propre normalisé de $P$ de valeur propre $1$ (il y en a un seul car la valeur propre $1$ était simple). On vérifie facilement qu'il s'agit de $N^{-1/2} \,{}^{t}(1, \ldots, 1)$. Enfin, on a $O_{1i_0} = N^{-1/2}$ car c'est un coefficient de la première ligne de $O$, donc de la première colonne de $^{t}O = O^{-1}$, qui n'est autre que la matrice d'une base orthonormée de diagonalisation de $P$ dans la base canonique. On conclut comme attendu que 
-        \begin{equation}\label{eq:pi_infini}
-        \lim_{\tau \to +\infty} \pi = N^{-1}\,^{t}(1, \ldots, 1).
-        \end{equation}
-        \item En remarquant que $\pi^{\infty} := \displaystyle\lim_{\tau \to +\infty}\pi$ est le vecteur propre de $P$ associé à la valeur propre $1$ et dont la somme des coefficients vaut $1$. En effet, pour tout $\tau$, la somme des coefficients de $\pi$ vaut $1$, ce qui reste vrai à la limite (en particulier $\pi^{\infty} \neq 0$), et on a :
-        $$P \pi^{\infty} = P\lim_{\tau \to +\infty} P^{\tau}(\delta_{i,i_0})_{i \in V} = \lim_{\tau \to +\infty} P^{\tau + 1}(\delta_{i,i_0})_{i \in V} = \pi^{\infty}.$$
-        Encore une fois, on trouve la loi uniforme sur $V$.
-    \end{itemize} 
-    
-    
+    lorsque $\tau \to +\infty$.
+    La question précédente nous donne :
+    $$
+        P^{\tau + 1}U = \pi_{\tau + 1} = P\pi_\tau = P \times P^\tau U
+    $$
 
+    En faisant tendre $\tau$ vers l'infini dans l'égalité précédente, on obtient $P\pi^{\infty} = \pi^\infty$ avec $\pi^\infty = P^\infty U$. Comme de plus la somme des composantes de $\pi^\infty$ vaut $1$, ce vecteur est en particulier non nul. Ainsi $\pi^\infty$ est un vecteur propre de $P$ associé à la valeur $1$. Or on remarque que $(1)_{i\in V}$ est aussi un vecteur propre pour $P$ associé à la valeur propre $1$ dont le sous espace propre est de dimension $1$. 
+    Il existe donc $\lambda \in \R$ tel que $\pi^\infty = \lambda \, (1)_{i\in V}$. Vu que la somme des composants de $\pi^\infty$ vaut $1$, on obtient $\lambda = \frac{1}{N}$ ce qui conclut.
+    
     \item[T3.\label{q:t3}] Notons
     $$\mathcal{A}_m = \ens{(y_1,\ldots,y_m) \in V^{m}}{\Card \{y_1, \ldots, y_{m-1}\} =  \Card \{y_1, \ldots, y_{m}\} = m - (\ell - 1)},$$
     de sorte que
